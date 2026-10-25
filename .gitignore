@@ -1,0 +1,7 @@
+node_modules/
+*.log
+.DS_Store
+wix-deploy/
+pension-wix-upload.zip
+pension-github-pages.zip
+.env

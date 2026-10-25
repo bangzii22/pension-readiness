@@ -1,0 +1,13 @@
+{
+  "name": "pension-readiness-web",
+  "version": "1.0.0",
+  "description": "Simple pension readiness calculator for USA and Indonesia.",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/pension.test.mjs",
+    "start": "npx http-server . -p 4173 -c-1"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
