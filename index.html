@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pension Readiness Checker</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow" data-i18n="heroEyebrow">Pension planning calculator</p>
+        <h1 data-i18n="heroTitle">Ready for pension?</h1>
+        <p class="hero-copy" data-i18n="heroCopy">Enter age, pension target, life expectancy, country, expenses, savings, mortgage, debt, pension investment return, and desired final balance. The calculator estimates how much money is needed, whether the person is ready, and whether pension should be extended.</p>
+      </div>
+      <div class="hero-panel">
+        <strong data-i18n="countriesIncluded">Countries included</strong>
+        <span data-i18n="countriesIncludedText">USA and Indonesia with editable inflation assumptions</span>
+      </div>
+    </section>
+
+    <section class="grid-layout">
+      <form id="pensionForm" class="card input-card">
+        <h2 data-i18n="personalAssumptions">Personal and country assumptions</h2>
+        <div class="field-row">
+          <label><span data-i18n="country">Country</span>
+            <select name="country">
+              <option value="USA">USA</option>
+              <option value="Indonesia" selected>Indonesia</option>
+            </select>
+          </label>
+          <label><span data-i18n="currentAge">Current age</span>
+            <input name="currentAge" type="number" value="45" min="18" max="100" required>
+          </label>
+          <label><span data-i18n="plannedPensionAge">Planned pension age</span>
+            <input name="retirementAge" type="number" value="65" min="20" max="100" required>
+          </label>
+          <label><span data-i18n="lifeExpectancyAge">Life expectancy age</span>
+            <input name="lifeExpectancy" type="number" value="80" min="40" max="120" required>
+          </label>
+        </div>
+        <p id="countryNote" class="note"></p>
+
+        <h2 data-i18n="currentFinancialStatus">Current financial status</h2>
+        <div class="field-row">
+          <label><span data-i18n="currentSavings">Current savings / investments</span>
+            <input class="currency-input" name="currentSavings" type="text" inputmode="decimal" value="250,000" placeholder="250,000" required>
+          </label>
+          <label><span data-i18n="currentMortgageBalance">Current mortgage balance</span>
+            <input class="currency-input" name="mortgageBalance" type="text" inputmode="decimal" value="150,000" placeholder="150,000">
+          </label>
+          <label><span data-i18n="otherDebtBalance">Other debt balance</span>
+            <input class="currency-input" name="otherDebt" type="text" inputmode="decimal" value="25,000" placeholder="25,000">
+          </label>
+          <label><span data-i18n="monthlySavingUntilPension">Monthly saving until pension</span>
+            <input class="currency-input" name="monthlySaving" type="text" inputmode="decimal" value="1,500" placeholder="1,500">
+          </label>
+        </div>
+
+        <h2 data-i18n="expensesAndRates">Expenses and planning rates</h2>
+        <div class="field-row">
+          <label><span data-i18n="currentNetMonthlyExpenses">Current net monthly expenses</span>
+            <input class="currency-input" name="monthlyExpense" type="text" inputmode="decimal" value="$5,000" placeholder="$5,000" required>
+          </label>
+          <label><span data-i18n="inflationAssumption">Inflation record / assumption (%)</span>
+            <input name="inflationRate" type="number" value="3.0" min="0" max="30" step="0.1" required>
+          </label>
+          <label><span data-i18n="expectedReturnBeforePension">Expected return before pension (%)</span>
+            <input name="annualReturnRate" type="number" value="5.0" min="0" max="30" step="0.1" required>
+          </label>
+          <label><span data-i18n="investmentReturnDuringPension">Investment return during pension (%)</span>
+            <input name="retirementInvestmentRate" type="number" value="5.0" min="-20" max="30" step="0.1" required>
+          </label>
+          <label><span data-i18n="finalBalanceTarget">Final balance target (%)</span>
+            <input name="finalBalancePercent" type="number" value="0" min="0" max="99" step="1" required>
+          </label>
+        </div>
+        <p class="note" data-i18n="finalBalanceNote">Final balance target means how much of the starting pension fund should remain at life expectancy. Use 0% to spend down the fund, 25% to keep 25%, or any percentage up to 99%.</p>
+
+        <button type="submit" data-i18n="checkReadiness">Check readiness</button>
+      </form>
+
+      <div id="result" class="result-wrap" aria-live="polite"></div>
+    </section>
+
+    <section id="projection" class="projection-wrap" aria-live="polite"></section>
+
+    <section class="card explanation">
+      <h2 data-i18n="explanationTitle">How the readiness check works</h2>
+      <ol>
+        <li data-i18n="explanation1">Subtract mortgage and other debt from current savings to estimate net investable assets.</li>
+        <li data-i18n="explanation2">Project assets to pension age using current savings, monthly saving, and expected return.</li>
+        <li data-i18n="explanation3">Inflate current annual net expenses to pension age using the selected country inflation assumption.</li>
+        <li data-i18n="explanation4">Estimate money needed at pension age by treating the target pension fund as invested during retirement, paying yearly expenses, and preserving the selected final balance percentage.</li>
+        <li data-i18n="explanation5">If there is a gap, calculate extra monthly saving needed and test later pension ages until the gap closes or life expectancy is reached.</li>
+      </ol>
+      <p class="disclaimer" data-i18n="disclaimer">This is an educational planning tool, not financial advice. Replace defaults with current official inflation records and personal assumptions before making decisions.</p>
+      <p class="disclaimer"><strong data-i18n="creatorDisclaimer">This web application is created by Sate Bang Kumis Houston. Contact your certified financial planner for more details plan.</strong></p>
+    </section>
+  </main>
+
+  <script type="module">
+    import { bindPensionForm } from './src/pension.js';
+    bindPensionForm({
+      form: document.getElementById('pensionForm'),
+      resultRoot: document.getElementById('result'),
+      projectionRoot: document.getElementById('projection'),
+    });
+  </script>
+</body>
+</html>
